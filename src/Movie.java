@@ -1,8 +1,13 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Movie extends AMedia {
     public Movie(String data) {
         super(data);
+    }
+
+    public Movie(String title, String releaseYear, double rating, ArrayList<String> categories) {
+        super(title,releaseYear,rating,categories);
     }
 
     /**
@@ -37,6 +42,18 @@ public class Movie extends AMedia {
     @Override
     public String getType() {
         return "MOVIE";
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+
+        if (!(other instanceof Movie otherMyClass))
+            return false;
+
+        return otherMyClass.title.equals(this.title) && otherMyClass.releaseYear.equals(this.releaseYear)
+                && otherMyClass.rating == this.rating && otherMyClass.categories.equals(this.categories);
     }
 
     /**

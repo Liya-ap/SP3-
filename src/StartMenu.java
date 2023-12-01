@@ -49,8 +49,10 @@ public class StartMenu extends AMenu {
      * Loads all user accounts from database and checks if user exists
      */
     private void login() {
-        fileIO = new FileIO();
-        ArrayList<String> data = fileIO.loadAllUsers("data/userData.txt");
+        //fileIO = new FileIO();
+        //ArrayList<String> data = fileIO.loadAllUsers("data/userData.txt");
+        dbConnector = new DBConnector();
+        ArrayList<String> data = dbConnector.loadAllUsers("");
 
         if (!data.isEmpty()) {
             String[] userData = validateUsername(data);
@@ -140,8 +142,10 @@ public class StartMenu extends AMenu {
      * Loads all user accounts in database and check if user already exists
      */
     private void createAccount() {
-        fileIO = new FileIO();
-        ArrayList<String> data = fileIO.loadAllUsers("data/userData.txt");
+        //fileIO = new FileIO();
+        //ArrayList<String> data = fileIO.loadAllUsers("data/userData.txt");
+        dbConnector = new DBConnector();
+        ArrayList<String> data = dbConnector.loadAllUsers("");
 
         String username = createUsername(data);
         if (!username.isEmpty()) {
@@ -189,8 +193,10 @@ public class StartMenu extends AMenu {
             String password = textUI.getInput("\nCreate password (Minimum 8 characters) or back to start menu (q): ");
 
             if (password.length() >= 8) {
-                fileIO = new FileIO();
-                boolean userSavedToFile = fileIO.saveUserData("data/userData.txt", username, password);
+                //fileIO = new FileIO();
+                //boolean userSavedToFile = fileIO.saveUserData("data/userData.txt", username, password);
+                dbConnector = new DBConnector();
+                boolean userSavedToFile = dbConnector.saveUserData("", username, password);
 
                 if (!userSavedToFile) {
                     textUI.displayMessage("\nCould not create an account.");

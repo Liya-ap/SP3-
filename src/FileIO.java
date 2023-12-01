@@ -53,15 +53,22 @@ public class FileIO implements Database {
      * @return an ArrayList of medias for either Series og Movie
      * This method is called to times from MainMenu(loadLibrary()) to make a complete AMedia-ArrayList containing Movies and Series
      */
-    public ArrayList<String> loadAllMedias(String path) {
-        ArrayList<String> medias = new ArrayList<>();
+    public ArrayList<AMedia> loadAllMedias(String path) {
+        ArrayList<AMedia> medias = new ArrayList<>();
         File file = new File(path);
 
         try {
             Scanner scan = new Scanner(file);
             while (scan.hasNextLine()) {
                 String mediaData = scan.nextLine();
-                medias.add(mediaData);
+                String[] stringsAfterSplit = mediaData.split(";", -1);
+                if (stringsAfterSplit.length-1 < 5) {
+                    AMedia movie = new Movie(mediaData);
+                    medias.add(movie);
+                } else {
+                    AMedia series = new Series(mediaData);
+                    medias.add(series);
+                }
             }
         } catch (FileNotFoundException e) {
             return null;
@@ -104,28 +111,12 @@ public class FileIO implements Database {
      */
     public ArrayList<AMedia> loadListData(User user, String listType) {
         ArrayList<AMedia> medias = new ArrayList<>();
-        ArrayList<String> listData = loadAllMedias("data/" + user.getUsername() + listType + "List.txt");
-
-        ArrayList<String> allMovies = loadAllMedias("data/100bedstefilm.txt");
-        ArrayList<String> allSeries = loadAllMedias("data/100bedsteserier.txt");
+        ArrayList<AMedia> listData = loadAllMedias("data/" + user.getUsername() + listType + "List.txt");
 
         if (listData != null) {
-            for (String mediaData : listData) {
-                for (String movieData: allMovies) {
-                    if (mediaData.equals(movieData)) {
-                        AMedia movie = new Movie(movieData);
-                        medias.add(movie);
-                    }
-                }
-
-                for (String seriesData: allSeries) {
-                    if (mediaData.equals(seriesData)) {
-                        AMedia series = new Series(seriesData);
-                        medias.add(series);
-                    }
-                }
-            }
+            medias.addAll(listData);
         }
+
         return medias;
     }
 }

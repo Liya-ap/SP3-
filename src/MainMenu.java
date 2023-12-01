@@ -382,17 +382,12 @@ public class MainMenu extends AMenu {
      * Loads all available medias that can be watched in this streaming service
      */
     private void loadLibrary() {
-        ArrayList<String> movieData = fileIO.loadAllMedias("data/100bedstefilm.txt");
-        ArrayList<String> seriesData = fileIO.loadAllMedias("data/100bedsteserier.txt");
+        //ArrayList<AMedia> movieData = fileIO.loadAllMedias("data/100bedstefilm.txt");
+        //ArrayList<AMedia> seriesData = fileIO.loadAllMedias("data/100bedsteserier.txt");
+        ArrayList<AMedia> movieData = dbConnector.loadAllMedias("movie");
+        ArrayList<AMedia> seriesData = dbConnector.loadAllMedias("series");
 
-        for (String s : movieData) {
-            AMedia movie = new Movie(s);
-            mediaLibrary.add(movie);
-        }
-
-        for (String s : seriesData) {
-            AMedia series = new Series(s);
-            mediaLibrary.add(series);
-        }
+        mediaLibrary.addAll(movieData);
+        mediaLibrary.addAll(seriesData);
     }
 }

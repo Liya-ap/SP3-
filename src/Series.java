@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Series extends AMedia {
     private String endingYear;
@@ -8,6 +9,12 @@ public class Series extends AMedia {
     public Series(String data) {
         super(data);
     }
+    public Series(String title, String releaseYear, double rating, ArrayList<String> categories, String endingYear, String seasonsData) {
+        super(title,releaseYear,rating,categories);
+        this.endingYear = endingYear;
+        setSeasonsAndEpisodes(seasonsData);
+        loadSeasons();
+    }
 
     /**
      * Splits all the data that's passed as a String when creating a Series object.
@@ -15,7 +22,6 @@ public class Series extends AMedia {
      */
     @Override
     public void setAllInformation() {
-        seasonsAndEpisodes = new ArrayList<>();
         ArrayList<String> allCategories = new ArrayList<>();
 
         String releaseYear = "";
@@ -46,11 +52,7 @@ public class Series extends AMedia {
         double rating = Double.parseDouble(ratingData);
 
         String seasonsData = row[4].trim();
-        String[] seriesSeasons = seasonsData.split(",");
-
-        for (String season : seriesSeasons) {
-            seasonsAndEpisodes.add(season.trim());
-        }
+        setSeasonsAndEpisodes(seasonsData);
 
         super.setTitle(title);
         super.setReleaseYear(releaseYear);
@@ -58,6 +60,20 @@ public class Series extends AMedia {
         super.setCategories(allCategories);
         this.endingYear = endingYear;
         loadSeasons();
+    }
+
+    /**
+     * Splits the data that's given into a String ex. "1-13"
+     * and adds to an arraylist
+     * @param seasonsData String containing all data for a series seasons and episodes
+     */
+    private void setSeasonsAndEpisodes(String seasonsData) {
+        seasonsAndEpisodes = new ArrayList<>();
+        String[] seriesSeasons = seasonsData.split("[.,]+");
+
+        for (String season : seriesSeasons) {
+            seasonsAndEpisodes.add(season.trim());
+        }
     }
 
     /**
@@ -96,6 +112,19 @@ public class Series extends AMedia {
      */
     public ArrayList<Season> getAllSeasons() {
         return allSeasons;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+
+        if (!(other instanceof Series otherMyClass))
+            return false;
+
+        return otherMyClass.title.equals(this.title) && otherMyClass.releaseYear.equals(this.releaseYear)
+                && otherMyClass.rating == this.rating && otherMyClass.categories.equals(this.categories) && otherMyClass.endingYear.equals(this.endingYear)
+                && otherMyClass.allSeasons.equals(this.allSeasons);
     }
 
     /**

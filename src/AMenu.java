@@ -1,6 +1,7 @@
 public abstract class AMenu {
     protected TextUI textUI = new TextUI();
     protected Database fileIO = new FileIO();
+    protected Database dbConnector = new DBConnector();
     protected User user;
     protected final String exit = "exit";
     protected final String goBack = "q";

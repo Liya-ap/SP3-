@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class ListOfWatchedMedia implements List{
     private final Database fileIO = new FileIO();
+    private final Database dbConnector = new DBConnector();
     private ArrayList<AMedia> allWatchedMedia = new ArrayList<>();
 
     /**
@@ -30,7 +31,7 @@ public class ListOfWatchedMedia implements List{
     @Override
     public boolean addMedia(AMedia media) {
         for (AMedia watched: allWatchedMedia) {
-            if (watched.getData().equals(media.getData())) {
+            if (watched.equals(media)) {
                 return false;
             }
         }
@@ -47,7 +48,7 @@ public class ListOfWatchedMedia implements List{
     @Override
     public boolean removeMedia(AMedia media) {
         for (AMedia watched: allWatchedMedia) {
-            if (watched.getData().equals(media.getData())) {
+            if (watched.equals(media)) {
                 allWatchedMedia.remove(watched);
                 return true;
             }
@@ -62,7 +63,8 @@ public class ListOfWatchedMedia implements List{
      */
     @Override
     public boolean saveList(User user) {
-        return fileIO.saveListData(user, this.getListType(), getAllMedias());
+        //return fileIO.saveListData(user, this.getListType(), getAllMedias());
+        return dbConnector.saveListData(user, this.getListType(), getAllMedias());
     }
 
     /**
@@ -71,6 +73,7 @@ public class ListOfWatchedMedia implements List{
      */
     @Override
     public void loadList(User user) {
-        allWatchedMedia = fileIO.loadListData(user, this.getListType());
+        //allWatchedMedia = fileIO.loadListData(user, this.getListType());
+        allWatchedMedia = dbConnector.loadListData(user, this.getListType());
     }
 }

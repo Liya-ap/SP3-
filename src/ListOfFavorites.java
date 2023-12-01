@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class ListOfFavorites implements List{
     private final Database fileIO = new FileIO();
+    private final Database dbConnector = new DBConnector();
     private ArrayList<AMedia> allFavoriteMedias = new ArrayList<>();
 
     /**
@@ -30,7 +31,7 @@ public class ListOfFavorites implements List{
     @Override
     public boolean addMedia(AMedia media) {
         for (AMedia favorite: allFavoriteMedias) {
-            if (favorite.getData().equals(media.getData())) {
+            if (favorite.equals(media)) {
                 return false;
             }
         }
@@ -47,7 +48,7 @@ public class ListOfFavorites implements List{
     @Override
     public boolean removeMedia(AMedia media) {
         for (AMedia favorite: allFavoriteMedias) {
-            if (favorite.getData().equals(media.getData())) {
+            if (favorite.equals(media)) {
                 allFavoriteMedias.remove(favorite);
                 return true;
             }
@@ -62,7 +63,8 @@ public class ListOfFavorites implements List{
      */
     @Override
     public boolean saveList(User user) {
-        return fileIO.saveListData(user, this.getListType(), this.getAllMedias());
+        //return fileIO.saveListData(user, this.getListType(), this.getAllMedias());
+        return dbConnector.saveListData(user,this.getListType(),this.getAllMedias());
     }
 
     /**
@@ -71,6 +73,7 @@ public class ListOfFavorites implements List{
      */
     @Override
     public void loadList(User user) {
-        allFavoriteMedias = fileIO.loadListData(user, this.getListType());
+        //allFavoriteMedias = fileIO.loadListData(user, this.getListType());
+        allFavoriteMedias = dbConnector.loadListData(user, this.getListType());
     }
 }

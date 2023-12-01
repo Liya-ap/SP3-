@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public abstract class AMedia {
-    protected final String data;
+    protected  String data;
     protected String title;
     protected String releaseYear;
     protected double rating;
@@ -10,6 +10,13 @@ public abstract class AMedia {
     public AMedia(String data) {
         this.data = data;
         setAllInformation();
+    }
+
+    public AMedia(String title, String releaseYear, double rating, ArrayList<String> categories) {
+        this.title = title;
+        this.releaseYear = releaseYear;
+        this.rating = rating;
+        this.categories = categories;
     }
 
     /**
